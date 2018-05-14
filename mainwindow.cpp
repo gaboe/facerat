@@ -18,8 +18,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     auto result = factorial(ui->factorialInput->value());
-    qDebug() << result;
-    //ui->resultLabel->setText("Result: " + QString::fromStdString(std::to_string(result)));
     ui->resultLabel->setText("Result: " + result);
     ui->resultLabel->show();
 
@@ -91,4 +89,42 @@ int MainWindow::multiply(int x, int res[], int res_size)
         res_size++;
     }
     return res_size;
+}
+
+void MainWindow::runEratosthenesSieve(int upperBound) {
+
+      int upperBoundSquareRoot = (int)sqrt((double)upperBound);
+
+      bool *isComposite = new bool[upperBound + 1];
+
+      memset(isComposite, 0, sizeof(bool) * (upperBound + 1));
+
+      for (int m = 2; m <= upperBoundSquareRoot; m++) {
+
+            if (!isComposite[m]) {
+
+                  qDebug() << m << " ";
+
+                  for (int k = m * m; k <= upperBound; k += m)
+
+                        isComposite[k] = true;
+
+            }
+
+      }
+
+      for (int m = upperBoundSquareRoot; m <= upperBound; m++)
+
+            if (!isComposite[m])
+
+                  qDebug() << m << " ";
+
+      delete [] isComposite;
+
+}
+
+void MainWindow::on_eraBtn_clicked()
+{
+    runEratosthenesSieve(ui->eraInput->value());
+
 }

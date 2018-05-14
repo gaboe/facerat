@@ -18,11 +18,14 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_eraBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     unsigned long long int getFactorial(int n);
     int multiply(int x, int res[], int res_size);
     QString factorial(int n);
+    void runEratosthenesSieve(int upperBound);
 };
 
 #endif // MAINWINDOW_H
