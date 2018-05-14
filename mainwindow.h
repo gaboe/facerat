@@ -25,7 +25,7 @@ private:
     unsigned long long int getFactorial(int n);
     int multiply(int x, int res[], int res_size);
     QString factorial(int n);
-    void runEratosthenesSieve(int upperBound);
+    void runEratosthenesSieve(int lower, int upper);
 };
 
 #endif // MAINWINDOW_H

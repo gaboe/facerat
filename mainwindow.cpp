@@ -91,40 +91,32 @@ int MainWindow::multiply(int x, int res[], int res_size)
     return res_size;
 }
 
-void MainWindow::runEratosthenesSieve(int upperBound) {
+void MainWindow::runEratosthenesSieve(int lower,int upper) {
+       ui->listWidget->clear();
+       bool prime[upper+1];
+       memset(prime, true, sizeof(prime));
 
-      int upperBoundSquareRoot = (int)sqrt((double)upperBound);
+       for (int p=2; p*p<=upper; p++)
+       {
+           // If prime[p] is not changed, then it is a prime
+           if (prime[p] == true)
+           {
+               // Update all multiples of p
+               for (int i=p*2; i<=upper; i += p)
+                   prime[i] = false;
+           }
+       }
 
-      bool *isComposite = new bool[upperBound + 1];
+       // Print all prime numbers
+       for (int p=2; p<=upper; p++)
+          if (prime[p] && p >= lower){
+              ui->listWidget->addItem(QString::fromStdString(std::to_string(p)));
+          }
 
-      memset(isComposite, 0, sizeof(bool) * (upperBound + 1));
-
-      for (int m = 2; m <= upperBoundSquareRoot; m++) {
-
-            if (!isComposite[m]) {
-
-                  qDebug() << m << " ";
-
-                  for (int k = m * m; k <= upperBound; k += m)
-
-                        isComposite[k] = true;
-
-            }
-
-      }
-
-      for (int m = upperBoundSquareRoot; m <= upperBound; m++)
-
-            if (!isComposite[m])
-
-                  qDebug() << m << " ";
-
-      delete [] isComposite;
 
 }
 
 void MainWindow::on_eraBtn_clicked()
 {
-    runEratosthenesSieve(ui->eraInput->value());
-
+    runEratosthenesSieve(ui->eraInputLower->value(),ui->eraInputUpper->value());
 }

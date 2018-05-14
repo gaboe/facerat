@@ -71,10 +71,10 @@
      <number>256</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="eraInput">
+   <widget class="QSpinBox" name="eraInputUpper">
     <property name="geometry">
      <rect>
-      <x>670</x>
+      <x>690</x>
       <y>20</y>
       <width>91</width>
       <height>31</height>
@@ -108,6 +108,29 @@
     </property>
     <property name="text">
      <string>Enter number and we will calculate primes for you</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="eraInputLower">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>20</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>800000000</number>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>150</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
     </property>
    </widget>
   </widget>
