@@ -15,8 +15,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    unsigned long long int getFactorial(int n);
+    int multiply(int x, int res[], int res_size);
+    QString factorial(int n);
 };
 
 #endif // MAINWINDOW_H
