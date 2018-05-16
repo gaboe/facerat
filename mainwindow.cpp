@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listWidget->hide();
     ui->eraCount->hide();
     ui->eraShowBtn->hide();
+    ui->factorialProgressBar->hide();
+    ui->eraProgressBar->hide();
 }
 
 MainWindow::~MainWindow()
@@ -23,12 +25,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::handleFactorialResult(const QString &s)
 {
+    ui->factorialProgressBar->setValue(100);
+    ui->factorialProgressBar->hide();
     ui->resultLabel->setText("Result: " + s);
     ui->resultLabel->show();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
+    ui->factorialProgressBar->show();
+    ui->factorialProgressBar->setValue(4);
     FactorialWorker *workerThread = new FactorialWorker();
     connect(workerThread, &FactorialWorker::resultReady, this, &MainWindow::handleFactorialResult);
     connect(workerThread, &FactorialWorker::finished, workerThread, &QObject::deleteLater);
@@ -41,6 +47,8 @@ void MainWindow::on_eraBtn_clicked()
     ui->listWidget->hide();
     ui->eraCount->hide();
     ui->eraShowBtn->hide();
+    ui->eraProgressBar->show();
+    ui->eraProgressBar->setValue(11);
     EratosSieveWorker *workerThread = new EratosSieveWorker();
     connect(workerThread, &EratosSieveWorker::resultReady, this, &MainWindow::handleEratosSieveResult);
     connect(workerThread, &EratosSieveWorker::finished, workerThread, &QObject::deleteLater);
@@ -54,6 +62,7 @@ void MainWindow::handleEratosSieveResult(QStringList result)
 {
     ui->listWidget->addItems(result);
     ui->eraCount->setText(QString::fromStdString(std::to_string(result.length())));
+    ui->eraProgressBar->hide();
     ui->eraCount->show();
     ui->eraShowBtn->show();
 }

@@ -45,7 +45,7 @@
      <rect>
       <x>20</x>
       <y>110</y>
-      <width>651</width>
+      <width>1061</width>
       <height>91</height>
      </rect>
     </property>
@@ -81,7 +81,7 @@
      </rect>
     </property>
     <property name="maximum">
-     <number>800000000</number>
+     <number>2000000</number>
     </property>
    </widget>
    <widget class="QPushButton" name="eraBtn">
@@ -157,6 +157,32 @@
     </property>
     <property name="text">
      <string>Show</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="factorialProgressBar">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>150</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="eraProgressBar">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>340</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
     </property>
    </widget>
   </widget>
