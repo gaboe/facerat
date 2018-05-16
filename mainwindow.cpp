@@ -4,6 +4,7 @@
 #include "factorialworker.h"
 #include "eratossieveworker.h"
 #include <QStringList>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,7 +35,7 @@ void MainWindow::handleFactorialResult(const QString &s)
 void MainWindow::on_pushButton_clicked()
 {
     ui->factorialProgressBar->show();
-    ui->factorialProgressBar->setValue(4);
+    ui->factorialProgressBar->setValue(80);
     FactorialWorker *workerThread = new FactorialWorker();
     connect(workerThread, &FactorialWorker::resultReady, this, &MainWindow::handleFactorialResult);
     connect(workerThread, &FactorialWorker::finished, workerThread, &QObject::deleteLater);
@@ -48,14 +49,28 @@ void MainWindow::on_eraBtn_clicked()
     ui->eraCount->hide();
     ui->eraShowBtn->hide();
     ui->eraProgressBar->show();
-    ui->eraProgressBar->setValue(11);
-    EratosSieveWorker *workerThread = new EratosSieveWorker();
-    connect(workerThread, &EratosSieveWorker::resultReady, this, &MainWindow::handleEratosSieveResult);
-    connect(workerThread, &EratosSieveWorker::finished, workerThread, &QObject::deleteLater);
-    workerThread->lower = ui->eraInputLower->value();
-    workerThread->upper = ui->eraInputUpper->value();
+    ui->eraProgressBar->setValue(5);
+    QTimer::singleShot(50, this, MainWindow::incrementEraProgressBar);
+    eratosSieveThread = new EratosSieveWorker();
+    connect(eratosSieveThread, &EratosSieveWorker::resultReady, this, &MainWindow::handleEratosSieveResult);
+    connect(eratosSieveThread, &EratosSieveWorker::finished, eratosSieveThread, &QObject::deleteLater);
+    eratosSieveThread->lower = ui->eraInputLower->value();
+    eratosSieveThread->upper = ui->eraInputUpper->value();
 
-    workerThread->start();
+    eratosSieveThread->start();
+
+}
+
+void MainWindow::incrementEraProgressBar()
+{
+    ui->eraProgressBar->setValue(ui->eraProgressBar->value() + 1);
+    if(eratosSieveThread != nullptr && !eratosSieveThread->isFinished()){
+        if(ui->eraProgressBar->value() < 70)
+            QTimer::singleShot(50, this, MainWindow::incrementEraProgressBar);
+        else
+            QTimer::singleShot(500, this, MainWindow::incrementEraProgressBar);
+    }
+
 }
 
 void MainWindow::handleEratosSieveResult(QStringList result)

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QThread>
+#include "eratossieveworker.h"
 
 namespace Ui {
 class MainWindow;
@@ -11,8 +12,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    QThread factorialThread;
-
+    EratosSieveWorker *eratosSieveThread;
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -34,6 +34,7 @@ private:
     QString factorial(int n);
     void runEratosthenesSieve(int lower, int upper);
     void handleEratosSieveResult(QStringList result);
+    void incrementEraProgressBar();
 };
 
 #endif // MAINWINDOW_H
