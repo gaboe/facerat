@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QThread>
 
 namespace Ui {
 class MainWindow;
@@ -10,13 +11,17 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    QThread factorialThread;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
+public slots:
+    void handleFactorialResult(const QString &s);
     void on_pushButton_clicked();
+
+private slots:
 
     void on_eraBtn_clicked();
 
