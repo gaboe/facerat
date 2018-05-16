@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    factorialworker.cpp
+    factorialworker.cpp \
+    eratossieveworker.cpp
 
 HEADERS += \
         mainwindow.h \
-    factorialworker.h
+    factorialworker.h \
+    eratossieveworker.h
 
 FORMS += \
         mainwindow.ui

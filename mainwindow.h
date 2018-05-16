@@ -31,6 +31,7 @@ private:
     int multiply(int x, int res[], int res_size);
     QString factorial(int n);
     void runEratosthenesSieve(int lower, int upper);
+    void handleEratosSieveResult(QList<int> result);
 };
 
 #endif // MAINWINDOW_H

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include "factorialworker.h"
+#include "eratossieveworker.h"
+#include <QList>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,32 +33,20 @@ void MainWindow::on_pushButton_clicked()
     workerThread->start();
 }
 
-void MainWindow::runEratosthenesSieve(int lower,int upper) {
-       ui->listWidget->clear();
-       bool prime[upper+1];
-       memset(prime, true, sizeof(prime));
-
-       for (int p=2; p*p<=upper; p++)
-       {
-           // If prime[p] is not changed, then it is a prime
-           if (prime[p] == true)
-           {
-               // Update all multiples of p
-               for (int i=p*2; i<=upper; i += p)
-                   prime[i] = false;
-           }
-       }
-
-       // Print all prime numbers
-       for (int p=2; p<=upper; p++)
-          if (prime[p] && p >= lower){
-              ui->listWidget->addItem(QString::fromStdString(std::to_string(p)));
-          }
-
-
-}
-
 void MainWindow::on_eraBtn_clicked()
 {
-    runEratosthenesSieve(ui->eraInputLower->value(),ui->eraInputUpper->value());
+    EratosSieveWorker *workerThread = new EratosSieveWorker();
+    connect(workerThread, &EratosSieveWorker::resultReady, this, &MainWindow::handleEratosSieveResult);
+    connect(workerThread, &EratosSieveWorker::finished, workerThread, &QObject::deleteLater);
+    workerThread->lower = ui->eraInputLower->value();
+    workerThread->upper = ui->eraInputUpper->value();
+
+    workerThread->start();
+}
+
+void MainWindow::handleEratosSieveResult(QList<int> result)
+{
+    for (int i = 0; i < result.size(); ++i) {
+        //ui->listWidget->addItem(QString::fromStdString(std::to_string(result.at(i))));
+    }
 }
