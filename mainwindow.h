@@ -25,6 +25,8 @@ private slots:
 
     void on_eraBtn_clicked();
 
+    void on_eraShowBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     unsigned long long int getFactorial(int n);

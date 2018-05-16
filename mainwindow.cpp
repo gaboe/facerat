@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->resultLabel->hide();
+    ui->listWidget->hide();
+    ui->eraCount->hide();
+    ui->eraShowBtn->hide();
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +39,8 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_eraBtn_clicked()
 {
     ui->listWidget->hide();
+    ui->eraCount->hide();
+    ui->eraShowBtn->hide();
     EratosSieveWorker *workerThread = new EratosSieveWorker();
     connect(workerThread, &EratosSieveWorker::resultReady, this, &MainWindow::handleEratosSieveResult);
     connect(workerThread, &EratosSieveWorker::finished, workerThread, &QObject::deleteLater);
@@ -48,5 +53,12 @@ void MainWindow::on_eraBtn_clicked()
 void MainWindow::handleEratosSieveResult(QStringList result)
 {
     ui->listWidget->addItems(result);
+    ui->eraCount->setText(QString::fromStdString(std::to_string(result.length())));
+    ui->eraCount->show();
+    ui->eraShowBtn->show();
+}
+
+void MainWindow::on_eraShowBtn_clicked()
+{
     ui->listWidget->show();
 }
