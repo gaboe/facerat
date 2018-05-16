@@ -1,9 +1,10 @@
 #include "eratossieveworker.h"
-#include <QList>
+#include <QStringList>
+#include <QString>
 #include <QDebug>
 void EratosSieveWorker::run()
 {
-    auto result = new QList<int>();
+    auto result = new QStringList();
     bool prime[upper+1];
     memset(prime, true, sizeof(prime));
 
@@ -22,7 +23,7 @@ void EratosSieveWorker::run()
     for (int p=2; p<=upper; p++)
        if (prime[p] && p >= lower){
            qDebug() << p;
-           result->append(p);
+           result->append(QString::fromStdString(std::to_string(p)));
        }
 
     emit resultReady(*result);

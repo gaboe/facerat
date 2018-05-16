@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    qRegisterMetaType <QList<int>>("QList<int>");    // <--------------
+    qRegisterMetaType <QStringList>("QStringList");
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

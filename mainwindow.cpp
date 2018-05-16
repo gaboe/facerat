@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "factorialworker.h"
 #include "eratossieveworker.h"
-#include <QList>
+#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,6 +35,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_eraBtn_clicked()
 {
+    ui->listWidget->hide();
     EratosSieveWorker *workerThread = new EratosSieveWorker();
     connect(workerThread, &EratosSieveWorker::resultReady, this, &MainWindow::handleEratosSieveResult);
     connect(workerThread, &EratosSieveWorker::finished, workerThread, &QObject::deleteLater);
@@ -44,9 +45,8 @@ void MainWindow::on_eraBtn_clicked()
     workerThread->start();
 }
 
-void MainWindow::handleEratosSieveResult(QList<int> result)
+void MainWindow::handleEratosSieveResult(QStringList result)
 {
-    for (int i = 0; i < result.size(); ++i) {
-        //ui->listWidget->addItem(QString::fromStdString(std::to_string(result.at(i))));
-    }
+    ui->listWidget->addItems(result);
+    ui->listWidget->show();
 }

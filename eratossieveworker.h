@@ -2,7 +2,7 @@
 #define ERATOSSIEVEWORKER_H
 
 #include <QThread>
-#include <QList>
+#include <QStringList>
 
 class EratosSieveWorker : public QThread
 {
@@ -13,7 +13,7 @@ public:
     int upper;
     int lower;
 signals:
-    void resultReady(QList<int> result);
+    void resultReady(QStringList result);
 };
 
 #endif // ERATOSSIEVEWORKER_H
