@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QThread>
 #include "eratossieveworker.h"
+#include "factorialworker.h"
 
 namespace Ui {
 class MainWindow;
@@ -13,6 +14,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     EratosSieveWorker *eratosSieveThread;
+    FactorialWorker *factorialThread;
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -27,6 +29,8 @@ private slots:
     void on_eraPauseBtn_clicked();
 
     void on_eraCancelBtn_clicked();
+
+    void on_factorialCancelBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

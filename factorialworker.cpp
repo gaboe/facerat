@@ -3,11 +3,10 @@
 #include "QString"
 #include <iostream>
 #include <cstring>
-#define MAX 500
 int max = 50000;
 
 void FactorialWorker::factorial(int arr[], int n){
-    if (!n) return;
+    if (!n || isInterruptionRequested()) return;
     int carry = 0;
     for (int i=max-1; i>=0; --i){
         arr[i] = (arr[i] * n) + carry;
@@ -37,6 +36,8 @@ void FactorialWorker::run() {
     std::memset(arr,0,max*sizeof(int));
     arr[max-1] = 1;
     factorial(arr,number);
-    auto s = display(arr);
-    emit resultReady(s);
+    if(isInterruptionRequested())
+        return;
+
+    emit resultReady(display(arr));
 }

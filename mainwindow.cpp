@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->eraProgressBar->hide();
     ui->eraPauseBtn->hide();
     ui->eraCancelBtn->hide();
+    ui->factorialPauseBtn->hide();
+    ui->factorialCancelBtn->hide();
 }
 
 MainWindow::~MainWindow()
@@ -32,17 +34,24 @@ void MainWindow::handleFactorialResult(const QString &s)
     ui->factorialProgressBar->hide();
     ui->resultLabel->setText("Result: " + s);
     ui->resultLabel->show();
+    ui->factorialPauseBtn->hide();
+    ui->factorialCancelBtn->hide();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
+    ui->resultLabel->hide();
+    ui->pushButton->hide();
     ui->factorialProgressBar->show();
     ui->factorialProgressBar->setValue(80);
-    FactorialWorker *workerThread = new FactorialWorker();
-    connect(workerThread, &FactorialWorker::resultReady, this, &MainWindow::handleFactorialResult);
-    connect(workerThread, &FactorialWorker::finished, workerThread, &QObject::deleteLater);
-    workerThread->number = ui->factorialInput->value();
-    workerThread->start();
+    ui->factorialPauseBtn->show();
+    ui->factorialCancelBtn->show();
+    factorialThread = new FactorialWorker();
+    connect(factorialThread, &FactorialWorker::resultReady, this, &MainWindow::handleFactorialResult);
+    connect(factorialThread, &FactorialWorker::finished, factorialThread, &QObject::deleteLater);
+    factorialThread->number = ui->factorialInput->value();
+
+    factorialThread->start();
 }
 
 void MainWindow::on_eraBtn_clicked()
@@ -134,5 +143,19 @@ void MainWindow::on_eraCancelBtn_clicked()
         eratosSieveThread->requestInterruption();
         eratosSieveThread->wait();
         eratosSieveThread->deleteLater();
+    }
+}
+
+void MainWindow::on_factorialCancelBtn_clicked()
+{
+    if(factorialThread && !factorialThread->isFinished()){
+        ui->pushButton->show();
+        ui->factorialPauseBtn->hide();
+        ui->factorialCancelBtn->hide();
+        ui->factorialProgressBar->hide();
+        ui->pushButton->shortcut();
+        factorialThread->requestInterruption();
+        factorialThread->wait();
+        factorialThread->deleteLater();
     }
 }
