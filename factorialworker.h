@@ -8,8 +8,8 @@ class FactorialWorker : public QThread
 {
     Q_OBJECT
     void run() override;
-    QString factorial(int number);
-    int multiply(int x, int res[], int res_size);
+    void factorial(int arr[], int n);
+    QString display(int arr[]);
 signals:
     void resultReady(const QString &s);
 public:

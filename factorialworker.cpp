@@ -1,67 +1,42 @@
 #include "factorialworker.h"
 #include "QDebug"
-
+#include "QString"
+#include <iostream>
+#include <cstring>
 #define MAX 500
+int max = 50000;
 
-QString FactorialWorker::factorial(int number)
-{
-    int res[MAX];
-
-    // Initialize result
-    res[0] = 1;
-    int res_size = 1;
-
-    // Apply simple factorial formula n! = 1 * 2 * 3 * 4...*n
-    for (int x=2; x<=number; x++){
-        res_size = multiply(x, res, res_size);
-        qDebug() << res_size;
+void FactorialWorker::factorial(int arr[], int n){
+    if (!n) return;
+    int carry = 0;
+    for (int i=max-1; i>=0; --i){
+        arr[i] = (arr[i] * n) + carry;
+        carry = arr[i]/10;
+        arr[i] %= 10;
     }
-
-    auto str = QString("");
-    std::string result = "";
-    for (int i=res_size-1; i>=0; i--){
-        auto a = res[i];
-        result += std::to_string(a);
-    }
-    qDebug() << "result to emit";
-
-    return QString::fromStdString(result);
+    factorial(arr,n-1);
 }
 
-// This function multiplies x with the number
-// represented by res[].
-// res_size is size of res[] or number of digits in the
-// number represented by res[]. This function uses simple
-// school mathematics for multiplication.
-// This function may value of res_size and returns the
-// new value of res_size
-int FactorialWorker::multiply(int x, int res[], int res_size)
-{
-    int carry = 0;  // Initialize carry
-
-    // One by one multiply n with individual digits of res[]
-    for (int i=0; i<res_size; i++)
-    {
-        int prod = res[i] * x + carry;
-
-        // Store last digit of 'prod' in res[]
-        res[i] = prod % 10;
-
-        // Put rest in carry
-        carry  = prod/10;
+QString FactorialWorker::display(int arr[]){
+    int ctr = 0;
+    auto s = QString("");
+    for (int i=0; i<max; i++){
+        if (!ctr && arr[i])
+            ctr = 1;
+        if(ctr)
+        {
+            s = s.append(QString::fromStdString(std::to_string(arr[i])));
+            qDebug() << arr[i];
+        }
     }
-
-    // Put carry in res and increase result size
-    while (carry)
-    {
-        res[res_size] = carry%10;
-        carry = carry/10;
-        res_size++;
-    }
-    return res_size;
+    return s;
 }
-
 
 void FactorialWorker::run() {
-    emit resultReady(factorial(number));
+    int *arr = new int[max];
+    std::memset(arr,0,max*sizeof(int));
+    arr[max-1] = 1;
+    factorial(arr,number);
+    auto s = display(arr);
+    emit resultReady(s);
 }
