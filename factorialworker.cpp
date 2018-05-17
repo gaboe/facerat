@@ -12,8 +12,11 @@ QString FactorialWorker::factorial(int number)
     int res_size = 1;
 
     // Apply simple factorial formula n! = 1 * 2 * 3 * 4...*n
-    for (int x=2; x<=number; x++)
+    for (int x=2; x<=number; x++){
         res_size = multiply(x, res, res_size);
+        qDebug() << res_size;
+    }
+
     auto str = QString("");
     std::string result = "";
     for (int i=res_size-1; i>=0; i--){

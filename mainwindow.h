@@ -22,10 +22,11 @@ public slots:
     void on_pushButton_clicked();
 
 private slots:
-
     void on_eraBtn_clicked();
-
     void on_eraShowBtn_clicked();
+    void on_eraPauseBtn_clicked();
+
+    void on_eraCancelBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -35,6 +36,8 @@ private:
     void runEratosthenesSieve(int lower, int upper);
     void handleEratosSieveResult(QStringList result);
     void incrementEraProgressBar();
+    bool isEratosSieveSleeping = false;
+    void handleSleepingEratosSieve();
 };
 
 #endif // MAINWINDOW_H

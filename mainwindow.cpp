@@ -57,12 +57,17 @@ void MainWindow::on_eraBtn_clicked()
     eratosSieveThread->lower = ui->eraInputLower->value();
     eratosSieveThread->upper = ui->eraInputUpper->value();
 
+    eratosSieveThread->sleep(5);
     eratosSieveThread->start();
-
 }
 
 void MainWindow::incrementEraProgressBar()
 {
+    if(isEratosSieveSleeping){
+        QTimer::singleShot(50, this, MainWindow::incrementEraProgressBar);
+        return;
+    }
+
     ui->eraProgressBar->setValue(ui->eraProgressBar->value() + 1);
     if(eratosSieveThread != nullptr && !eratosSieveThread->isFinished()){
         if(ui->eraProgressBar->value() < 70)
@@ -85,4 +90,25 @@ void MainWindow::handleEratosSieveResult(QStringList result)
 void MainWindow::on_eraShowBtn_clicked()
 {
     ui->listWidget->show();
+}
+
+void MainWindow::on_eraPauseBtn_clicked()
+{
+    isEratosSieveSleeping = !isEratosSieveSleeping;
+    handleSleepingEratosSieve();
+}
+
+void MainWindow::handleSleepingEratosSieve()
+{
+    if(!isEratosSieveSleeping && eratosSieveThread != nullptr && !eratosSieveThread->isFinished()){
+        eratosSieveThread->sleep(10);
+        //QTimer::singleShot(500, this, MainWindow::handleSleepingEratosSieve);
+    }
+}
+
+void MainWindow::on_eraCancelBtn_clicked()
+{
+    if(eratosSieveThread != nullptr && !eratosSieveThread->isFinished()){
+        eratosSieveThread->wait();
+    }
 }

@@ -7,7 +7,6 @@ void EratosSieveWorker::run()
     auto result = new QStringList();
     bool prime[upper+1];
     memset(prime, true, sizeof(prime));
-
     for (int p=2; p*p<=upper; p++)
     {
         // If prime[p] is not changed, then it is a prime
