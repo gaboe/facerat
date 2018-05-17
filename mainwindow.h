@@ -32,6 +32,8 @@ private slots:
 
     void on_factorialCancelBtn_clicked();
 
+    void on_factorialPauseBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     unsigned long long int getFactorial(int n);
@@ -41,6 +43,7 @@ private:
     void handleEratosSieveResult(QStringList result);
     void incrementEraProgressBar();
     bool isEratosSieveSleeping = false;
+    bool isFactorialSleeping = false;
     void handleSleepingEratosSieve();
 };
 

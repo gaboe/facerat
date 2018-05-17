@@ -30,12 +30,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::handleFactorialResult(const QString &s)
 {
-    ui->factorialProgressBar->setValue(100);
-    ui->factorialProgressBar->hide();
     ui->resultLabel->setText("Result: " + s);
-    ui->resultLabel->show();
-    ui->factorialPauseBtn->hide();
-    ui->factorialCancelBtn->hide();
+
+    if(!isFactorialSleeping){
+        ui->factorialProgressBar->setValue(100);
+        ui->factorialProgressBar->hide();
+        ui->resultLabel->show();
+        ui->factorialPauseBtn->hide();
+        ui->factorialCancelBtn->hide();
+        ui->pushButton->show();
+    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -157,5 +161,25 @@ void MainWindow::on_factorialCancelBtn_clicked()
         factorialThread->requestInterruption();
         factorialThread->wait();
         factorialThread->deleteLater();
+    }
+}
+
+void MainWindow::on_factorialPauseBtn_clicked()
+{
+    isFactorialSleeping = !isFactorialSleeping;
+    if(!isFactorialSleeping )
+    {
+        ui->factorialPauseBtn->setText("Pause");
+    }
+    if(!isFactorialSleeping  && factorialThread && factorialThread->isFinished()){
+        ui->factorialPauseBtn->hide();
+        ui->factorialCancelBtn->hide();
+        ui->factorialProgressBar->hide();
+        ui->resultLabel->show();
+        ui->pushButton->show();
+
+    }
+    else if(isFactorialSleeping  && factorialThread  && !factorialThread->isFinished()){
+        ui->factorialPauseBtn->setText("Continue");
     }
 }
