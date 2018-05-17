@@ -9,6 +9,8 @@ void EratosSieveWorker::run()
     memset(prime, true, sizeof(prime));
     for (int p=2; p*p<=upper; p++)
     {
+        if(isInterruptionRequested())
+            return;
         // If prime[p] is not changed, then it is a prime
         if (prime[p] == true)
         {
@@ -19,11 +21,17 @@ void EratosSieveWorker::run()
     }
 
     // Print all prime numbers
-    for (int p=2; p<=upper; p++)
-       if (prime[p] && p >= lower){
-           qDebug() << p;
-           result->append(QString::fromStdString(std::to_string(p)));
-       }
+    for (int p=2; p<=upper; p++){
+
+        if(isInterruptionRequested())
+            return;
+        if (prime[p] && p >= lower){
+            qDebug() << p;
+            result->append(QString::fromStdString(std::to_string(p)));
+        }
+    }
+    if(isInterruptionRequested())
+        return;
 
     emit resultReady(*result);
 }

@@ -127,6 +127,12 @@ void MainWindow::on_eraPauseBtn_clicked()
 void MainWindow::on_eraCancelBtn_clicked()
 {
     if(eratosSieveThread && !eratosSieveThread->isFinished()){
+        ui->eraPauseBtn->hide();
+        ui->eraCancelBtn->hide();
+        ui->eraProgressBar->hide();
+        ui->eraBtn->show();
+        eratosSieveThread->requestInterruption();
         eratosSieveThread->wait();
+        eratosSieveThread->deleteLater();
     }
 }
