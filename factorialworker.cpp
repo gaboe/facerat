@@ -25,7 +25,7 @@ QString FactorialWorker::display(int arr[]){
         if(ctr)
         {
             s = s.append(QString::fromStdString(std::to_string(arr[i])));
-            qDebug() << arr[i];
+            //qDebug() << arr[i];
         }
     }
     return s;

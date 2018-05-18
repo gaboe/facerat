@@ -45,6 +45,7 @@ private:
     bool isEratosSieveSleeping = false;
     bool isFactorialSleeping = false;
     void handleSleepingEratosSieve();
+    void incrementFactorialProgressBar();
 };
 
 #endif // MAINWINDOW_H

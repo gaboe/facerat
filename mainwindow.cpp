@@ -30,6 +30,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::handleFactorialResult(const QString &s)
 {
+    factorialThread->deleteLater();
     ui->resultLabel->setText("Result: " + s);
 
     if(!isFactorialSleeping){
@@ -47,15 +48,23 @@ void MainWindow::on_pushButton_clicked()
     ui->resultLabel->hide();
     ui->pushButton->hide();
     ui->factorialProgressBar->show();
-    ui->factorialProgressBar->setValue(80);
+    ui->factorialProgressBar->setValue(10);
     ui->factorialPauseBtn->show();
     ui->factorialCancelBtn->show();
+
     factorialThread = new FactorialWorker();
     connect(factorialThread, &FactorialWorker::resultReady, this, &MainWindow::handleFactorialResult);
     connect(factorialThread, &FactorialWorker::finished, factorialThread, &QObject::deleteLater);
     factorialThread->number = ui->factorialInput->value();
 
     factorialThread->start();
+
+    QTimer::singleShot(1000, this, MainWindow::incrementFactorialProgressBar);
+}
+
+void MainWindow::incrementFactorialProgressBar()
+{
+    ui->factorialProgressBar->setValue(ui->factorialProgressBar->value() + 50);
 }
 
 void MainWindow::on_eraBtn_clicked()
@@ -95,6 +104,8 @@ void MainWindow::incrementEraProgressBar()
     }
 
 }
+
+
 
 void MainWindow::handleEratosSieveResult(QStringList result)
 {
@@ -171,7 +182,7 @@ void MainWindow::on_factorialPauseBtn_clicked()
     {
         ui->factorialPauseBtn->setText("Pause");
     }
-    if(!isFactorialSleeping  && factorialThread && factorialThread->isFinished()){
+    if(!isFactorialSleeping && factorialThread && factorialThread->isFinished()){
         ui->factorialPauseBtn->hide();
         ui->factorialCancelBtn->hide();
         ui->factorialProgressBar->hide();
@@ -179,7 +190,7 @@ void MainWindow::on_factorialPauseBtn_clicked()
         ui->pushButton->show();
 
     }
-    else if(isFactorialSleeping  && factorialThread  && !factorialThread->isFinished()){
+    else if(isFactorialSleeping  && factorialThread  && factorialThread->isRunning()){
         ui->factorialPauseBtn->setText("Continue");
     }
 }
